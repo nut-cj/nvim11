@@ -10,7 +10,17 @@
 " - no plugins
 " - well yeah it's still bloated
 
+" ===
+" " === Auto load for first time uses
+" " ===
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+		silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+						\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+			autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+		endif
 
+" If you are WSL, maybe you need the settings.
+noremap R :source ~/.config/nvim/init.vim<CR>
 " ====================
 " === Editor Setup ===
 " ====================
@@ -101,7 +111,7 @@ let g:terminal_color_14  = '#9AEDFE'
 " ===
 " Set <LEADER> as <SPACE>, ; as :
 let mapleader=" "
-noremap ; :
+"noremap ; :
 
 " Save & quit
 noremap Q :q<CR>
@@ -111,11 +121,11 @@ noremap S :w<CR>
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
 " Undo operations
-noremap l u
+"noremap l u
 
 " Insert Key
-noremap k i
-noremap K I
+"noremap k i
+"noremap K I
 
 " make Y to copy till the end of the line
 nnoremap Y y$
@@ -147,32 +157,31 @@ noremap <c-g> :term lazygit<CR>
 " ===
 " === Cursor Movement
 " ===
-" New cursor movement (the default arrow keys are used for resizing windows)
 "     ^
 "     u
 " < n   i >
 "     e
 "     v
-noremap <silent> u k
-noremap <silent> n h
-noremap <silent> e j
-noremap <silent> i l
+"noremap <silent> u k
+"noremap <silent> n h
+"noremap <silent> e j
+"noremap <silent> i l
 
 " U/E keys for 5 times u/e (faster navigation)
-noremap <silent> U 5k
-noremap <silent> E 5j
+noremap <silent> K 5k
+noremap <silent> J 5j
 
 " N key: go to the start of the line
-noremap <silent> N 0
+"noremap <silent> N 0
 " I key: go to the end of the line
-noremap <silent> I $
+"noremap <silent> I $
 
 " Faster in-line navigation
 noremap W 5w
 noremap B 5b
 
 " set h (same as n, cursor left) to 'end of word'
-noremap h e
+"noremap h e
 
 " Ctrl + U or E will move up/down the view port without moving the cursor
 noremap <C-U> 5<C-y>
@@ -189,19 +198,20 @@ inoremap <C-a> <ESC>A
 " ===
 " Use <space> + new arrow keys for moving the cursor around windows
 noremap <LEADER>w <C-w>w
-noremap <LEADER>u <C-w>k
-noremap <LEADER>e <C-w>j
-noremap <LEADER>n <C-w>h
-noremap <LEADER>i <C-w>l
+noremap <LEADER>k <C-w>k
+noremap <LEADER>j <C-w>j
+noremap <LEADER>h <C-w>h
+noremap <LEADER>l <C-w>l
 
 " Disable the default s key
 noremap s <nop>
 
+" editing
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-noremap su :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
-noremap se :set splitbelow<CR>:split<CR>
-noremap sn :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
-noremap si :set splitright<CR>:vsplit<CR>
+noremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+noremap sj :set splitbelow<CR>:split<CR>
+noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+noremap sl :set splitright<CR>:vsplit<CR>
 
 " Resize splits with arrow keys
 noremap <up> :res +5<CR>
@@ -210,7 +220,7 @@ noremap <left> :vertical resize-5<CR>
 noremap <right> :vertical resize+5<CR>
 
 " Place the two screens up and down
-noremap sh <C-w>t<C-w>K
+noremap ss <C-w>t<C-w>K
 " Place the two screens side by side
 noremap sv <C-w>t<C-w>H
 
@@ -228,11 +238,11 @@ noremap <LEADER>q <C-w>j:q<CR>
 " Create a new tab with tu
 noremap tu :tabe<CR>
 " Move around tabs with tn and ti
-noremap tn :-tabnext<CR>
-noremap ti :+tabnext<CR>
+noremap th :-tabnext<CR>
+noremap tl :+tabnext<CR>
 " Move the tabs with tmn and tmi
-noremap tmn :-tabmove<CR>
-noremap tmi :+tabmove<CR>
+noremap tmh :-tabmove<CR>
+noremap tml :+tabmove<CR>
 
 
 " ===
@@ -305,6 +315,7 @@ func! CompileRunGcc()
 		silent! exec "!chromium % &"
 	elseif &filetype == 'markdown'
 		exec "MarkdownPreview"
+		exec "MarkdownPreview"
 	elseif &filetype == 'tex'
 		silent! exec "VimtexStop"
 		silent! exec "VimtexCompile"
@@ -318,7 +329,6 @@ endfunc
 
 " experimental
 set lazyredraw
-set regexpengine=1
 
 
 " ===
@@ -336,16 +346,216 @@ source ~/.config/nvim/_machine_specific.vim
 hi NonText ctermfg=gray guifg=grey10
 "hi SpecialKey ctermfg=blue guifg=grey70
 
-" ===================== Start of Plugin Settings =====================
 
+" ===================== Start of Plugin ==============================
+call plug#begin('~/.vim/plugged')
+
+" When the plugin is correctly loaded, there will be a nice statusline at the bottom of each vim window.
+Plug 'vim-airline/vim-airline'
+
+" Elegant vim theme with bright colors.
+Plug 'connorholyday/vim-snazzy'
+
+" Testing my own plugin
+" Plug 'theniceboy/vim-calc'
+
+" Pretty Dress
+Plug 'bling/vim-bufferline'
+Plug 'bpietravalle/vim-bolt'
+Plug 'theniceboy/vim-deus'
+
+"Plug 'arzg/vim-colors-xcode'
+
+" Status line
+Plug 'theniceboy/eleline.vim'
+Plug 'ojroques/vim-scrollstatus'
+
+" General Highlighter
+" Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
+Plug 'RRethy/vim-illuminate'
+
+" File navigation
+"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'junegunn/fzf.vim'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+" Plug 'kevinhwang91/rnvimr'
+Plug 'airblade/vim-rooter'
+" Plug 'pechorin/any-jump.vim'
+
+" Taglist
+" Plug 'liuchengxu/vista.vim'
+
+" Debugger
+" Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python --enable-go'}
+
+" Auto Complete
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'wellle/tmux-complete.vim'
+
+" Snippets
+" Plug 'SirVer/ultisnips'
+Plug 'theniceboy/vim-snippets'
+
+" Undo Tree
+Plug 'mbbill/undotree'
+
+" Git
+Plug 'theniceboy/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
+Plug 'fszymanski/fzf-gitignore', { 'do': ':UpdateRemotePlugins' }
+"Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
+Plug 'cohama/agit.vim'
+
+" Autoformat
+Plug 'Chiel92/vim-autoformat'
+
+" Tex
+" Plug 'lervag/vimtex'
+
+" CSharp
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'ctrlpvim/ctrlp.vim' , { 'for': ['cs', 'vim-plug'] } " omnisharp-vim dependency
+
+" HTML, CSS, JavaScript, Typescript, PHP, JSON, etc.
+Plug 'elzr/vim-json'
+Plug 'neoclide/jsonc.vim'
+Plug 'othree/html5.vim'
+Plug 'alvan/vim-closetag'
+" Plug 'hail2u/vim-css3-syntax' " , { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+" Plug 'spf13/PIV', { 'for' :['php', 'vim-plug'] }
+" Plug 'pangloss/vim-javascript', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'yuezk/vim-js', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+" Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+" Plug 'jelera/vim-javascript-syntax', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+"Plug 'jaxbot/browserlink.vim'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'posva/vim-vue'
+
+" " Go
+" Plug 'fatih/vim-go' , { 'for': ['go', 'vim-plug'], 'tag': '*' }
+
+" Python
+" Plug 'tmhedberg/SimpylFold', { 'for' :['python', 'vim-plug'] }
+Plug 'Vimjas/vim-python-pep8-indent', { 'for' :['python', 'vim-plug'] }
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins', 'for' :['python', 'vim-plug'] }
+"Plug 'vim-scripts/indentpython.vim', { 'for' :['python', 'vim-plug'] }
+"Plug 'plytophogy/vim-virtualenv', { 'for' :['python', 'vim-plug'] }
+Plug 'tweekmonster/braceless.vim', { 'for' :['python', 'vim-plug'] }
+
+" " Flutter
+" Plug 'dart-lang/dart-vim-plugin'
+" Plug 'f-person/pubspec-assist-nvim', { 'for' : ['pubspec.yaml'] }
+" 
+" " Swift
+" Plug 'keith/swift.vim'
+" Plug 'arzg/vim-swift'
+
+" Markdown
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
+Plug 'dkarter/bullets.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
+" Other filetypes
+" Plug 'jceb/vim-orgmode', {'for': ['vim-plug', 'org']}
+
+" Editor Enhancement
+"Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mg979/vim-visual-multi'
+Plug 'tomtom/tcomment_vim' " in <space>cn to comment a line
+Plug 'theniceboy/antovim' " gs to switch
+Plug 'tpope/vim-surround' " type yskw' to wrap the word with '' or type cs'` to change 'word' to `word`
+Plug 'gcmt/wildfire.vim' " in Visual mode, type k' to select all text in '', or type k) k] k} kp
+Plug 'junegunn/vim-after-object' " da= to delete what's after =
+Plug 'godlygeek/tabular' " ga, or :Tabularize <regex> to align
+Plug 'tpope/vim-capslock'	" Ctrl+L (insert) to toggle capslock
+Plug 'easymotion/vim-easymotion'
+" Plug 'Konfekt/FastFold'
+Plug 'junegunn/vim-peekaboo'
+"Plug 'wellle/context.vim'
+Plug 'svermeulen/vim-subversive'
+Plug 'theniceboy/argtextobj.vim'
+Plug 'rhysd/clever-f.vim'
+Plug 'chrisbra/NrrwRgn'
+Plug 'AndrewRadev/splitjoin.vim'
+
+" For general writing
+" Plug 'junegunn/goyo.vim'
+"Plug 'reedes/vim-wordy'
+"Plug 'ron89/thesaurus_query.vim'
+
+" Bookmarks
+" Plug 'MattesGroeger/vim-bookmarks'
+
+" Find & Replace
+Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
+
+" Documentation
+"Plug 'KabbAmine/zeavim.vim' " <LEADER>z to find doc
+
+" Mini Vim-APP
+"Plug 'jceb/vim-orgmode'
+"Plug 'mhinz/vim-startify'
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
+
+" Vim Applications
+Plug 'itchyny/calendar.vim'
+   
+" Other visual enhancement
+Plug 'ryanoasis/vim-devicons'
+Plug 'luochen1990/rainbow'
+" Plug 'mg979/vim-xtabline'
+" Plug 'wincent/terminus'
+   
+" Other useful utilities
+Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
+" Plug 'makerj/vim-pdf'
+"Plug 'xolox/vim-session'
+"Plug 'xolox/vim-misc' " vim-session dep
+
+" Dependencies
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'kana/vim-textobj-user'
+" Plug 'roxma/nvim-yarp'
+
+
+
+call plug#end()
+" ===
+" === <++>
+" ===
+
+
+
+" ===================== Start of Plugin Settings =====================
 " ===
 " === Necessary Commands to Execute
 " ===
 exec "nohlsearch"
 
+" coloes
+" urce $MYVIMRC
+colorscheme snazzy
 
 " Open the _machine_specific.vim file if it has just been created
+" urce $MYVIMRC
+" urce $MYVIMRC
+" urce $MYVIMRC
 if has_machine_specific_file == 0
 	exec "e ~/.config/nvim/_machine_specific.vim"
 endif
 
+" WSL yank/paste support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+	    autocmd!
+		autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+	augroup END
+endif
+
+nnoremap "+p :r !powershell.exe -Command "& {Get-Clipboard}"<Enter>
