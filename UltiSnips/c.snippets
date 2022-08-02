@@ -1,0 +1,26 @@
+snippet inc "#include ..."
+#include $1
+endsnippet
+
+snippet incstd "#include <stdio.h>"
+#include <stdio.h>
+$1
+endsnippet
+
+snippet main "main() (main)"
+int main(void)
+{
+	${VISUAL}$0
+	return 0;
+}
+endsnippet
+
+snippet helloworld "helloworld program"
+#include <stdio.h>
+int main(void)
+{
+	printf("Hello World!");
+	return 0;
+}
+${VISUAL}$0
+endsnippet

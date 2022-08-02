@@ -1,0 +1,50 @@
+snippet pr "print" b
+print($1)
+$0
+endsnippet
+
+snippet ei "If" b
+elif ${1:condition}:
+    ${2:${VISUAL:pass}}
+endsnippet
+
+snippet forr "for loop" b
+for ${1:item} in range(${2:0}):
+    ${3:${VISUAL:pass}}
+endsnippet
+
+<<<<<<< HEAD
+snippet len "length" b
+len($1)$0
+endsnippet
+
+#! header
+snippet #! "#!/usr/bin/env python" b
+#!/usr/bin/env python3
+$0
+endsnippet
+=======
+snippet while "while loop" b
+while ${1:condition}:
+	${2:${VISUAL:pass}}
+endsnippet
+
+#! header
+snippet #! "#!/usr/bin/env python3" b
+#!/usr/bin/env python3
+$0
+endsnippet
+
+# q''
+snippet regex "" b
+${1:${VISUAL:var}} = re.compile(${2:r}'$3')
+${4:${VISUAL:mo}} = $1.search(${5:${VISUAL:string}})
+$4.group()
+$0
+endsnippet
+
+snippet "utf-8" "# encoding: UTF-8" r
+# -*- coding: utf-8 -*-
+$0
+endsnippet
+>>>>>>> f466622fc8412df00e4f33b934942757e6677285
